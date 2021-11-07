@@ -1,4 +1,7 @@
-'use strict'
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: DataTypes.STRING,
@@ -10,4 +13,4 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Todo)
   }
   return User
-}
+};

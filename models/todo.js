@@ -1,4 +1,7 @@
-'use strict'
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   const Todo = sequelize.define('Todo', {
     name: DataTypes.STRING,
@@ -9,4 +12,4 @@ module.exports = (sequelize, DataTypes) => {
     Todo.belongsTo(models.User)
   }
   return Todo
-}
+};
