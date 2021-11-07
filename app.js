@@ -9,6 +9,7 @@ const User = db.User
 const session = require('express-session')
 const usePassport = require('./config/passport')
 const passport = require('passport')
+const routes = require('./routes')
 
 
 
@@ -16,7 +17,12 @@ const app = express()
 const PORT = 3000
 
 usePassport(app)
-
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+app.use(routes)
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 app.use(session({
@@ -110,6 +116,19 @@ app.put('/:id', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+
+app.get('/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/', (req, res) => {
+  const UserId = req.user.id
+  const name = req.body.name
+
+  return Todo.create({ name, UserId })
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
